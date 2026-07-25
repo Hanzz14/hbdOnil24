@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Bungee&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CUSTOMIZE ME
+   Semua teks & path gambar diatur di bagian JS (CONFIG object)
+   di paling bawah file ini. Cari komentar "CONFIG" untuk edit.
+   ============================================================ */
+
+:root{
+  --sky-1:#eaf7ff;
+  --sky-2:#bfe6ff;
+  --sky-3:#8fd3ff;
+  --blue-deep:#1c4e80;
+  --blue-ink:#123a63;
+  --blue-accent:#3fa9f5;
+  --coral:#ff8fa3;
+  --sun:#ffd36e;
+  --white:#ffffff;
+  --paper:#fffdf8;
+  --shadow-blue: rgba(28,78,128,0.25);
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --font-display: 'Baloo 2', system-ui, sans-serif;
+  --font-gaming: 'Bungee', 'Baloo 2', system-ui, sans-serif;
+  --font-body: 'Poppins', system-ui, sans-serif;
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family: var(--font-body);
+  background: var(--sky-1);
+  color: var(--blue-ink);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+a,button{font-family:inherit;}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit;}
+
+:focus-visible{
+  outline: 3px solid var(--blue-deep);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+img{max-width:100%;display:block;}
+
+/* ---------------- Background scene ---------------- */
+.sky{
+  position:relative;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(255,255,255,0.9), rgba(255,255,255,0) 35%),
+    linear-gradient(180deg, var(--sky-2) 0%, var(--sky-3) 55%, var(--blue-accent) 100%);
+  overflow:hidden;
+  padding-bottom: clamp(40px, 8vw, 90px);
+}
+
+.blob{
+  position:absolute;
+  border-radius:50%;
+  background: rgba(255,255,255,0.35);
+  filter: blur(0px);
+  pointer-events:none;
+}
+.blob.b1{ width:260px; height:260px; top:-60px; left:-80px; }
+.blob.b2{ width:180px; height:180px; top:10%; right:-60px; background:rgba(255,255,255,0.25); }
+.blob.b3{ width:340px; height:340px; bottom:-120px; left:10%; background:rgba(255,255,255,0.18); }
+.blob.b4{ width:140px; height:140px; bottom:20%; right:6%; background:rgba(255,255,255,0.3); }
+
+.cloud{
+  position:absolute;
+  opacity:.9;
+  animation: drift 40s linear infinite;
+}
+.cloud svg{ width:100%; height:100%; display:block; }
+.cloud.c1{ width:120px; top:8%; left:-10%; animation-duration: 55s; }
+.cloud.c2{ width:90px; top:22%; left:-15%; animation-duration: 70s; animation-delay:-20s; opacity:.7;}
+.cloud.c3{ width:70px; top:4%; left:-20%; animation-duration: 46s; animation-delay:-10s; opacity:.6;}
+
+@keyframes drift{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(140vw); }
+}
+
+.sparkle{
+  position:absolute;
+  color: var(--sun);
+  font-size: 22px;
+  animation: twinkle 2.6s ease-in-out infinite;
+  pointer-events:none;
+  user-select:none;
+}
+.sparkle.s1{ top:16%; left:8%; animation-delay:0s; }
+.sparkle.s2{ top:30%; right:12%; animation-delay:.6s; font-size:16px;}
+.sparkle.s3{ top:60%; left:4%; animation-delay:1.2s; font-size:14px;}
+.sparkle.s4{ top:12%; right:28%; animation-delay:1.8s; font-size:18px;}
+
+@keyframes twinkle{
+  0%,100%{ opacity:.25; transform:scale(.8) rotate(0deg); }
+  50%{ opacity:1; transform:scale(1.15) rotate(15deg); }
+}
+
+/* ---------------- Hero ---------------- */
+.hero{
+  position:relative;
+  z-index:3;
+  text-align:center;
+  padding: clamp(50px,9vw,90px) 20px 0;
+}
+.headline{
+  font-family: var(--font-gaming);
+  line-height: 1;
+  margin: 0;
+  color: var(--white);
+  text-shadow:
+    0 4px 0 var(--blue-deep),
+    0 8px 18px rgba(18,58,99,0.4);
+  letter-spacing: 1px;
+}
+.headline .l1{
+  display:block;
+  font-size: clamp(30px, 6.4vw, 68px);
+  -webkit-text-stroke: 2px var(--blue-deep);
+}
+.headline .l2{
+  display:block;
+  font-size: clamp(40px, 9vw, 100px);
+  color: var(--sun);
+  -webkit-text-stroke: 3px var(--blue-deep);
+  margin-top: 6px;
+}
+.subtitle{
+  font-family: var(--font-body);
+  font-weight:600;
+  font-size: clamp(14px,2vw,19px);
+  color: var(--blue-deep);
+  max-width: 640px;
+  margin: 18px auto 0;
+  line-height:1.5;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* ---------------- Characters ---------------- */
+.cast{
+  position:relative;
+  z-index:3;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+  gap: clamp(4px, 3vw, 30px);
+  flex-wrap: wrap;
+  padding: clamp(30px,6vw,60px) 16px 0;
+}
+
+.character{
+  position:relative;
+  width: clamp(150px, 26vw, 260px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  animation: float 4.5s ease-in-out infinite;
+  cursor: pointer;
+}
+.character.mid{ width: clamp(180px, 30vw, 300px); z-index:2; animation-delay:.2s;}
+.character.left{ animation-delay:0s; }
+.character.right{ animation-delay:.4s; }
+
+@keyframes float{
+  0%,100%{ transform: translateY(0px); }
+  50%{ transform: translateY(-10px); }
+}
+
+.char-frame{
+  position:relative;
+  width:100%;
+  aspect-ratio: 3/4;
+  filter: drop-shadow(0 16px 14px rgba(18,58,99,0.3));
+  transition: transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.character:hover .char-frame,
+.character:focus-within .char-frame{
+  transform: scale(1.06) rotate(-2deg);
+}
+.character.right:hover .char-frame,
+.character.right:focus-within .char-frame{
+  transform: scale(1.06) rotate(2deg);
+}
+
+.char-frame img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  object-position: center bottom;
+  transition: opacity .4s ease;
+}
+.char-frame img.img-normal{ opacity:1; }
+.char-frame img.img-hover{ opacity:0; }
+.character:hover .img-normal,
+.character:focus-within .img-normal{ opacity:0; }
+.character:hover .img-hover,
+.character:focus-within .img-hover{ opacity:1; }
+
+/* email badge */
+.mail-btn{
+  position:absolute;
+  top: 6%;
+  right: 6%;
+  width: clamp(46px,7vw,60px);
+  height: clamp(46px,7vw,60px);
+  border-radius:50%;
+  background: linear-gradient(160deg, #fff, var(--sun));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 6px 0 rgba(28,78,128,0.28), 0 10px 18px rgba(18,58,99,0.25);
+  animation: vibrate 2.4s ease-in-out infinite;
+  z-index: 4;
+}
+.mail-btn::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border: 2px solid rgba(255,211,110,0.9);
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+.mail-btn svg{ width:56%; height:56%; }
+
+@keyframes vibrate{
+  0%,100%{ transform: rotate(0deg); }
+  10%{ transform: rotate(-8deg); }
+  20%{ transform: rotate(8deg); }
+  30%{ transform: rotate(-6deg); }
+  40%{ transform: rotate(6deg); }
+  50%{ transform: rotate(0deg); }
+}
+@keyframes pulse-ring{
+  0%{ transform: scale(0.9); opacity:.9; }
+  80%{ transform: scale(1.5); opacity:0; }
+  100%{ opacity:0; }
+}
+
+/* ---------------- Modal / Envelope / Letter ---------------- */
+.overlay{
+  position: fixed;
+  inset:0;
+  background: rgba(9,32,58,0.55);
+  backdrop-filter: blur(3px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .35s ease;
+  z-index: 50;
+  padding: 24px;
+}
+.overlay.active{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.scene{
+  position:relative;
+  width: min(92vw, 480px);
+  height: min(70vh, 340px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* envelope */
+.envelope{
+  position:absolute;
+  width: clamp(150px, 40vw, 220px);
+  aspect-ratio: 3/2;
+  transform: scale(0.2);
+  opacity:0;
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .3s ease;
+}
+.overlay.active .envelope{
+  transform: scale(1);
+  opacity:1;
+}
+.envelope.hide{
+  opacity:0;
+  transform: scale(0.6) translateY(-20px);
+  transition: opacity .3s ease, transform .3s ease;
+}
+.env-body{
+  position:absolute; inset:0;
+  background: linear-gradient(160deg, #ffffff, #dceefc);
+  border-radius: 14px;
+  box-shadow: 0 14px 24px rgba(9,32,58,0.35);
+}
+.env-flap{
+  position:absolute;
+  top:0; left:0; right:0;
+  height:60%;
+  background: linear-gradient(160deg, var(--blue-accent), var(--blue-deep));
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform .5s cubic-bezier(.5,0,.2,1);
+  border-radius: 14px 14px 0 0;
+}
+.envelope.open .env-flap{
+  transform: rotateX(-165deg);
+}
+.env-heart{
+  position:absolute;
+  bottom:16%;
+  left:50%;
+  transform: translateX(-50%);
+  color: var(--coral);
+  font-size: 22px;
+}
+
+/* letter paper (final modal card) */
+.letter-card{
+  position: fixed;
+  inset:0;
+  margin:auto;
+  width: min(92vw, 560px);
+  height: min(82vh, 640px);
+  background: var(--paper);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 30px 60px rgba(9,32,58,0.45);
+  opacity:0;
+  transform: scale(0.15) translateY(40px);
+  transition: transform .5s cubic-bezier(.34,1.2,.4,1), opacity .35s ease;
+  pointer-events:none;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.overlay.active .letter-card.show{
+  opacity:1;
+  transform: scale(1) translateY(0);
+  pointer-events:auto;
+}
+
+.letter-head{
+  position:relative;
+  flex: 0 0 auto;
+  background: linear-gradient(135deg, var(--sky-2), var(--blue-accent));
+  padding: 22px 56px 20px 22px;
+}
+.letter-head h2{
+  margin:0;
+  font-family: var(--font-display);
+  font-weight:800;
+  font-size: clamp(20px,3vw,28px);
+  color: var(--white);
+  text-shadow: 0 2px 0 var(--blue-deep);
+}
+.letter-head p{
+  margin: 4px 0 0;
+  font-weight:600;
+  font-size: 13px;
+  color: var(--blue-deep);
+}
+
+.close-btn{
+  position:absolute;
+  top:14px;
+  right:14px;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background: rgba(255,255,255,0.85);
+  color: var(--blue-deep);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  font-weight:700;
+  box-shadow: 0 4px 0 rgba(28,78,128,0.25);
+  transition: transform .2s ease;
+}
+.close-btn:hover{ transform: scale(1.1) rotate(90deg); }
+
+.letter-body{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 22px 24px 30px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.75;
+  color: #2b3f52;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sky-3) transparent;
+}
+.letter-body::-webkit-scrollbar{ width:8px; }
+.letter-body::-webkit-scrollbar-thumb{ background: var(--sky-3); border-radius: 8px; }
+
+.letter-body p{ margin: 0 0 14px; }
+.letter-body img{
+  border-radius: 14px;
+  margin: 14px 0;
+  box-shadow: 0 8px 18px rgba(9,32,58,0.2);
+}
+.letter-signature{
+  font-family: var(--font-display);
+  font-weight:700;
+  color: var(--blue-deep);
+  margin-top: 6px;
+}
+
+/* ---------------- Music FAB ---------------- */
+.music-fab{
+  position: fixed;
+  right: clamp(16px, 4vw, 28px);
+  bottom: clamp(16px, 4vw, 28px);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, #fff, var(--sky-3));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 6px 0 rgba(28,78,128,0.28), 0 10px 20px rgba(18,58,99,0.3);
+  z-index: 60;
+  transition: transform .2s ease, background .3s ease;
+}
+.music-fab:hover{ transform: scale(1.08); }
+.music-fab svg{ width: 46%; height: 46%; }
+.music-fab .icon-off{ display:block; }
+.music-fab .icon-on{ display:none; }
+.music-fab.playing{
+  background: linear-gradient(160deg, #fff, var(--sun));
+}
+.music-fab.playing .icon-off{ display:none; }
+.music-fab.playing .icon-on{ display:block; }
+.music-fab.playing::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border: 2px solid rgba(255,211,110,0.85);
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 1024px){
+  .hero{ padding: clamp(28px,6vw,50px) 20px 0; }
+  .cast{ padding-top: clamp(24px,5vw,40px); gap: 16px; align-items: flex-end; }
+  .character{ width: 24vw; }
+  .character.mid{ width: 27vw; }
+}
+
+@media (max-width: 640px){
+  .cast{ gap: 6px; padding-left: 10px; padding-right: 10px; }
+  .character{ width: 27vw; }
+  .character.mid{ width: 30vw; }
+  .mail-btn{ top:-8px; right:-8px; }
+  .letter-head{ padding: 18px 50px 16px 16px; }
+  .letter-body{ padding: 16px 16px 24px; font-size:14px; }
+}
+
+@media (max-width: 380px){
+  .cast{ gap: 2px; }
+  .character{ width: 26vw; }
+  .character.mid{ width: 30vw; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="sky">
+  <!-- decorative background -->
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+
+  <div class="cloud c1"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="28" ry="18"/><ellipse cx="60" cy="28" rx="22" ry="20"/><ellipse cx="80" cy="38" rx="18" ry="14"/></svg></div>
+  <div class="cloud c2"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="28" ry="18"/><ellipse cx="60" cy="28" rx="22" ry="20"/><ellipse cx="80" cy="38" rx="18" ry="14"/></svg></div>
+  <div class="cloud c3"><svg viewBox="0 0 100 60" fill="white"><ellipse cx="30" cy="35" rx="28" ry="18"/><ellipse cx="60" cy="28" rx="22" ry="20"/><ellipse cx="80" cy="38" rx="18" ry="14"/></svg></div>
+
+  <div class="sparkle s1">✦</div>
+  <div class="sparkle s2">✦</div>
+  <div class="sparkle s3">✧</div>
+  <div class="sparkle s4">✧</div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1 class="headline">
+      <span class="l1" id="headlineLine1">HAPPY BIRTHDAY,</span>
+      <span class="l2" id="headlineLine2">ONIEL</span>
+    </h1>
+    <p class="subtitle" id="subtitleText">ada surat nih. bukain dong surat dari mereka</p>
+  </header>
+
+  <!-- CHARACTERS -->
+  <section class="cast" id="castSection" aria-label="Karakter dan surat"></section>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="scene">
+    <div class="envelope" id="envelope">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-heart">♥</div>
+    </div>
+  </div>
+  <div class="letter-card" id="letterCard" role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+    <div class="letter-head">
+      <h2 id="letterTitle">Judul Surat</h2>
+      <p id="letterFrom">Dari: Nama</p>
+      <button class="close-btn" id="closeBtn" aria-label="Tutup surat">✕</button>
+    </div>
+    <div class="letter-body" id="letterBody"></div>
+  </div>
+</div>
+
+<!-- MUSIC: taruh file mp3 kamu di folder music/ dengan nama theme-song.mp3,
+     atau ubah path src di bawah. Sebelum file itu ada, tombol musik akan
+     memutar nada pendek sebagai placeholder sementara. -->
+<audio id="bgMusic" loop preload="none">
+  <source src="music/theme-song.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-fab" id="musicFab" aria-pressed="false" aria-label="Nyalakan musik">
+  <svg class="icon-off" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 18V6l11-2v12" stroke="#1c4e80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="6.5" cy="18" r="2.5" fill="#1c4e80"/>
+    <circle cx="17.5" cy="16" r="2.5" fill="#1c4e80"/>
+  </svg>
+  <svg class="icon-on" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 18V6l11-2v12" stroke="#1c4e80" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="6.5" cy="18" r="2.5" fill="#1c4e80"/>
+    <circle cx="17.5" cy="16" r="2.5" fill="#1c4e80"/>
+    <path d="M20.5 8.5c1 1 1 3.5 0 4.5M22.2 6.8c1.9 2 1.9 6.4 0 8.4" stroke="#1c4e80" stroke-width="1.6" stroke-linecap="round"/>
+  </svg>
+</button>
+
+<script>
+/* ==========================================================================
+   CONFIG — edit semua teks & gambar di sini
+   ==========================================================================
+   - normalImg / hoverImg: path ke foto. Simpan foto di folder "images/"
+     dengan nama sesuai path di bawah, atau ganti path-nya sesuai file kamu.
+   - Kalau gambar belum ada, otomatis muncul placeholder ilustrasi supaya
+     tampilan tetap rapi sebelum foto asli di-upload.
+   - letterHTML boleh diisi tag HTML biasa, termasuk <img src="..."> untuk
+     menyisipkan foto di dalam surat.
+   ========================================================================== */
+const CONFIG = {
+  headlineLine1: "HAPPY BIRTHDAY,",
+  headlineLine2: "ONIEL",
+  subtitle: "ada surat nih. bukain dong surat dari mereka",
+
+  characters: [
+    {
+      id: "char1",
+      name: "Member 1",
+      normalImg: "images/char1-normal.png",
+      hoverImg: "images/char1-hover.png",
+      letterTitle: "Untuk Member 1 🎂",
+      letterFrom: "Dari: Fans yang menyayangimu",
+      letterHTML: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <img src="${letterPlaceholderImg('Foto kenangan — ganti gambar ini')}" alt="Foto kenangan untuk Member 1">
+        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        <p class="letter-signature">Selamat ulang tahun! 🎉</p>
+      `
+    },
+    {
+      id: "char2",
+      name: "Member 2",
+      normalImg: "images/char2-normal.png",
+      hoverImg: "images/char2-hover.png",
+      letterTitle: "Untuk Member 2 🎂",
+      letterFrom: "Dari: Fans yang menyayangimu",
+      letterHTML: `
+        <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+        <img src="${letterPlaceholderImg('Foto kenangan — ganti gambar ini')}" alt="Foto kenangan untuk Member 2">
+        <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+        <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>
+        <p class="letter-signature">Selamat ulang tahun! 🎉</p>
+      `
+    },
+    {
+      id: "char3",
+      name: "Member 3",
+      normalImg: "images/char3-normal.png",
+      hoverImg: "images/char3-hover.png",
+      letterTitle: "Untuk Member 3 🎂",
+      letterFrom: "Dari: Fans yang menyayangimu",
+      letterHTML: `
+        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+        <img src="${letterPlaceholderImg('Foto kenangan — ganti gambar ini')}" alt="Foto kenangan untuk Member 3">
+        <p>Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.</p>
+        <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus.</p>
+        <p class="letter-signature">Selamat ulang tahun! 🎉</p>
+      `
+    }
+  ]
+};
+
+/* ========================================================================
+   Placeholder generator (dipakai kalau foto belum ada di path CONFIG)
+   ======================================================================== */
+function placeholderSVG(label, hue){
+  // Siluet transparan (bukan card) — sekadar penanda sampai foto asli di-upload.
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+    <ellipse cx="150" cy="392" rx="80" ry="10" fill="hsl(${hue},40%,45%)" opacity="0.12"/>
+    <circle cx="150" cy="118" r="58" fill="hsl(${hue},18%,72%)"/>
+    <path d="M70 250 C70 175 110 150 150 150 C190 150 230 175 230 250 L230 340 C230 365 195 380 150 380 C105 380 70 365 70 340 Z" fill="hsl(${hue},18%,72%)"/>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+}
+
+// Placeholder foto untuk di dalam surat — ganti <img src="..."> di letterHTML
+// dengan path foto asli (mis. "images/letter1-photo.jpg") kalau sudah siap.
+function letterPlaceholderImg(label){
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360">
+    <rect x="4" y="4" width="592" height="352" rx="18" fill="#eaf7ff" stroke="#8fd3ff" stroke-width="3" stroke-dasharray="10 8"/>
+    <circle cx="300" cy="150" r="42" fill="#bfe6ff"/>
+    <path d="M258 168 h84 v10 a6 6 0 0 1-6 6 h-72 a6 6 0 0 1-6-6 z" fill="#3fa9f5"/>
+    <circle cx="300" cy="160" r="18" fill="#eaf7ff"/>
+    <circle cx="300" cy="160" r="10" fill="#3fa9f5"/>
+    <text x="300" y="230" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="600" font-size="16" fill="#1c4e80">${label}</text>
+  </svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+}
+
+/* ========================================================================
+   Render characters
+   ======================================================================== */
+const castSection = document.getElementById('castSection');
+const positions = ['left','mid','right'];
+const hues = [200, 340, 45];
+
+CONFIG.characters.forEach((c, i) => {
+  const pos = positions[i] || 'mid';
+  const hue = hues[i] || 200;
+  const el = document.createElement('div');
+  el.className = `character ${pos}`;
+  el.dataset.id = c.id;
+  el.innerHTML = `
+    <div class="char-frame">
+      <img class="img-normal" src="${c.normalImg}" alt="${c.name}"
+           onerror="this.onerror=null;this.src='${placeholderSVG(c.name + ' (normal)', hue)}'">
+      <img class="img-hover" src="${c.hoverImg}" alt="${c.name} pose alternatif"
+           onerror="this.onerror=null;this.src='${placeholderSVG(c.name + ' (hover)', hue)}'">
+      <button class="mail-btn" data-id="${c.id}" aria-label="Buka surat untuk ${c.name}">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="4" width="20" height="16" rx="3" fill="#1c4e80"/>
+          <path d="M3 6l9 7 9-7" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  `;
+  castSection.appendChild(el);
+});
+
+/* text bindings */
+document.getElementById('headlineLine1').textContent = CONFIG.headlineLine1;
+document.getElementById('headlineLine2').textContent = CONFIG.headlineLine2;
+document.getElementById('subtitleText').textContent = CONFIG.subtitle;
+
+/* ========================================================================
+   Modal open / close logic with envelope -> letter animation sequence
+   ======================================================================== */
+const overlay = document.getElementById('overlay');
+const envelope = document.getElementById('envelope');
+const letterCard = document.getElementById('letterCard');
+const letterTitle = document.getElementById('letterTitle');
+const letterFrom = document.getElementById('letterFrom');
+const letterBody = document.getElementById('letterBody');
+const closeBtn = document.getElementById('closeBtn');
+
+let animTimers = [];
+function clearTimers(){ animTimers.forEach(t => clearTimeout(t)); animTimers = []; }
+
+function openLetter(charId){
+  const data = CONFIG.characters.find(c => c.id === charId);
+  if(!data) return;
+
+  letterTitle.textContent = data.letterTitle;
+  letterFrom.textContent = data.letterFrom;
+  letterBody.innerHTML = data.letterHTML;
+  letterBody.scrollTop = 0;
+
+  // reset state
+  envelope.classList.remove('open','hide');
+  letterCard.classList.remove('show');
+  clearTimers();
+
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // step 1: envelope pops in (handled by .active CSS transition)
+  // step 2: flap opens
+  animTimers.push(setTimeout(() => {
+    envelope.classList.add('open');
+  }, 450));
+
+  // step 3: envelope hides, paper grows into full letter card
+  animTimers.push(setTimeout(() => {
+    envelope.classList.add('hide');
+    letterCard.classList.add('show');
+  }, 900));
+
+  closeBtn.focus();
+}
+
+function closeLetter(){
+  clearTimers();
+  overlay.classList.remove('active');
+  letterCard.classList.remove('show');
+  envelope.classList.remove('open','hide');
+  document.body.style.overflow = '';
+}
+
+castSection.addEventListener('click', (e) => {
+  const el = e.target.closest('.character');
+  if(el) openLetter(el.dataset.id);
+});
+
+closeBtn.addEventListener('click', closeLetter);
+
+overlay.addEventListener('click', (e) => {
+  if(e.target === overlay) closeLetter();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && overlay.classList.contains('active')) closeLetter();
+});
+
+/* ========================================================================
+   Musik latar — tombol FAB pojok kanan bawah
+   ========================================================================
+   - Sumber utama: file mp3 di <audio id="bgMusic">. Ganti path
+     "music/theme-song.mp3" dengan file kamu sendiri kapan saja.
+   - Kalau file belum ada / gagal dimuat, sebagai placeholder sementara
+     tombol ini otomatis memutar nada pendek berulang via Web Audio API,
+     supaya tombolnya tetap berfungsi sebelum kamu upload lagu asli.
+   ======================================================================== */
+const bgMusic = document.getElementById('bgMusic');
+const musicFab = document.getElementById('musicFab');
+
+let musicOn = false;
+let usingFallback = false;
+let fallbackTimer = null;
+let audioCtx = null;
+
+function updateFabUI(){
+  musicFab.classList.toggle('playing', musicOn);
+  musicFab.setAttribute('aria-pressed', String(musicOn));
+  musicFab.setAttribute('aria-label', musicOn ? 'Matikan musik' : 'Nyalakan musik');
+}
+
+function startFallbackChime(){
+  audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+  const notes = [523.25, 587.33, 659.25, 523.25, 659.25, 698.46, 783.99, 659.25];
+  let i = 0;
+  (function playNote(){
+    if(!usingFallback) return;
+    const t = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = notes[i % notes.length];
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.linearRampToValueAtTime(0.16, t + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + 0.45);
+    i++;
+    fallbackTimer = setTimeout(playNote, 380);
+  })();
+}
+
+function stopFallbackChime(){
+  clearTimeout(fallbackTimer);
+}
+
+musicFab.addEventListener('click', () => {
+  if(!musicOn){
+    bgMusic.currentTime = 0;
+    bgMusic.play().then(() => {
+      musicOn = true;
+      usingFallback = false;
+      updateFabUI();
+    }).catch(() => {
+      // file mp3 belum ada / diblokir browser -> pakai nada placeholder
+      usingFallback = true;
+      musicOn = true;
+      startFallbackChime();
+      updateFabUI();
+    });
+  } else {
+    if(usingFallback){
+      usingFallback = false;
+      stopFallbackChime();
+    } else {
+      bgMusic.pause();
+    }
+    musicOn = false;
+    updateFabUI();
+  }
+});
+</script>
+</body>
+</html>
